@@ -22,9 +22,9 @@ const map = (input) => {
 
 class FlexBox extends Component {
 	render() {
-		const { direction, justify, align, wrap, title,
+		const { direction, justify, align, wrap,
 			margin, marginLeft, marginRight, marginTop, marginBottom,
-			padding, paddingLeft, paddingRight, paddingTop, paddingBottom } = this.props;
+			padding, paddingLeft, paddingRight, paddingTop, paddingBottom, ...other } = this.props;
 
 		/* FLEX */
 		const flexDirection = map(direction);
@@ -54,7 +54,7 @@ class FlexBox extends Component {
 		Object.keys(finalStyling).forEach(key => finalStyling[key] === undefined && delete finalStyling[key]);
 
 		return (
-			<div style={finalStyling} title={title} >
+			<div style={finalStyling} {...other} >
 				{this.props.children}
 			</div>
 		);
