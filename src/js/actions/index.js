@@ -1,4 +1,5 @@
 /* ACTION TYPES */
 export const UPDATE_STANZA_ARRAY = 'UPDATE_STANZA_ARRAY';
+export const UPDATE_ORIGINAL_LYRICS = 'UPDATE_ORIGINAL_LYRICS';
 
 export * from './lyrics';
