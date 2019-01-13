@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Menu, Container } from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Menu, Container } from 'semantic-ui-react'
 
 class MainHeader extends Component {
 	render() {
@@ -12,8 +12,8 @@ class MainHeader extends Component {
 					</Container>
 				</Menu>
 			</div>
-		);
+		)
 	}
 }
 
-export default MainHeader;
+export default MainHeader

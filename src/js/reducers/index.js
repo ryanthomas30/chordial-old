@@ -1,8 +1,14 @@
-import { combineReducers } from 'redux';
-import lyrics from './lyrics';
+// @flow
+import { combineReducers, Reducer } from 'redux'
+import lyrics, { LyricsState } from './lyricsReducer'
+import { ChordialAction } from '../actions'
 
-const rootReducer = combineReducers({
+export type RootState = {
+ lyrics: LyricsState
+}
+
+const rootReducer: Reducer<RootState, ChordialAction> = combineReducers({
 	lyrics
-});
+})
 
-export default rootReducer;
+export default rootReducer

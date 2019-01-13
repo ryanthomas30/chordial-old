@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 const mapping = {
 	start: 'flex-start',
@@ -7,57 +7,57 @@ const mapping = {
 	small: '12px',
 	medium: '24px',
 	large: '48px'
-};
+}
 
 const wrapMap = (b) => {
-	return b ? 'wrap' : 'nowrap';
-};
+	return b ? 'wrap' : 'nowrap'
+}
 
 const map = (input) => {
 	if (input in mapping) {
-		return mapping[input];
+		return mapping[input]
 	}
-	return input;
-};
+	return input
+}
 
 class FlexBox extends Component {
 	render() {
 		const { direction, justify, align, wrap,
 			margin, marginLeft, marginRight, marginTop, marginBottom,
-			padding, paddingLeft, paddingRight, paddingTop, paddingBottom, ...other } = this.props;
+			padding, paddingLeft, paddingRight, paddingTop, paddingBottom, ...other } = this.props
 
 		/* FLEX */
-		const flexDirection = map(direction);
-		const justifyContent = map(justify);
-		const alignItems = map(align);
-		const flexWrap = wrapMap(wrap);
+		const flexDirection = map(direction)
+		const justifyContent = map(justify)
+		const alignItems = map(align)
+		const flexWrap = wrapMap(wrap)
 
 		/* PADDING */
-		const paddingObj = { padding, paddingLeft, paddingRight, paddingTop, paddingBottom };
+		const paddingObj = { padding, paddingLeft, paddingRight, paddingTop, paddingBottom }
 		Object.keys(paddingObj).forEach(k => {
-			paddingObj[k] = typeof paddingObj[k] === 'number' ? `${paddingObj[k]}px` : map(paddingObj[k]);
-		});
+			paddingObj[k] = typeof paddingObj[k] === 'number' ? `${paddingObj[k]}px` : map(paddingObj[k])
+		})
 
 		/* MARGIN */
-		const marginObj = { margin, marginLeft, marginRight, marginTop, marginBottom };
+		const marginObj = { margin, marginLeft, marginRight, marginTop, marginBottom }
 		Object.keys(marginObj).forEach(k => {
-			marginObj[k] = typeof marginObj[k] === 'number' ? `${marginObj[k]}px` : map(marginObj[k]);
-		});
+			marginObj[k] = typeof marginObj[k] === 'number' ? `${marginObj[k]}px` : map(marginObj[k])
+		})
 
 		/* Merges props with style object */
 		const finalStyling = {
 			display: 'flex', flexDirection, justifyContent, alignItems, flexWrap,
 			...paddingObj, ...marginObj, ...this.props.style
-		};
+		}
 
 		/* Delete undefined fields */
-		Object.keys(finalStyling).forEach(key => finalStyling[key] === undefined && delete finalStyling[key]);
+		Object.keys(finalStyling).forEach(key => finalStyling[key] === undefined && delete finalStyling[key])
 
 		return (
 			<div style={finalStyling} {...other} >
 				{this.props.children}
 			</div>
-		);
+		)
 	}
 }
 
@@ -66,6 +66,6 @@ FlexBox.defaultProps = {
 	justify: 'start',
 	align: 'start',
 	wrap: 'wrap'
-};
+}
 
-export default FlexBox;
+export default FlexBox

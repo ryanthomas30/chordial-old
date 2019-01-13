@@ -1,34 +1,48 @@
-import React, { Component } from 'react';
+// @flow
+import React, { Component } from 'react'
 
-import { Form, TextArea, Modal, Button, Input } from 'semantic-ui-react';
+import { Form, TextArea, Modal, Button, Input } from 'semantic-ui-react'
 
-import { generateStanzaArray } from '../util';
+import { generateStanzaArray } from '../util'
 
-class LyricsInputButton extends Component {
-	constructor(props) {
-		super(props);
+import * as lyricsActions from '../actions/lyricsActions'
 
-		this._open = this._open.bind(this);
-		this._submit = this._submit.bind(this);
+type Props = {
+	originalLyrics: String,
+	songTitle: String,
+	updateStanzas: typeof lyricsActions.updateStanzas,
+	updateOriginalLyrics: typeof lyricsActions.updateOriginalLyrics
+}
 
-		this.state = { modalOpen: false };
+type State = {
+	modalOpen: Boolean
+}
+
+class LyricsInputButton extends Component<Props, State> {
+	constructor(props: Props) {
+		super(props)
+
+		this._open = this._open.bind(this)
+		this._submit = this._submit.bind(this)
+
+		this.state = { modalOpen: false }
 	}
 
 	_open() {
-		const { originalLyrics, songTitle } = this.props;
-		this.setState({ modalOpen: true, lyricsInput: originalLyrics, titleInput: songTitle });
+		const { originalLyrics, songTitle } = this.props
+		this.setState({ modalOpen: true, lyricsInput: originalLyrics, titleInput: songTitle })
 	}
 
 	_submit() {
-		const { updateStanzaArray, updateOriginalLyrics } = this.props;
-		const { lyricsInput, titleInput } = this.state;
-		updateOriginalLyrics(lyricsInput, titleInput);
-		updateStanzaArray(generateStanzaArray(lyricsInput));
-		this.setState({ modalOpen: false });
+		const { updateStanzas, updateOriginalLyrics } = this.props
+		const { lyricsInput, titleInput } = this.state
+		updateOriginalLyrics(lyricsInput, titleInput)
+		updateStanzas(generateStanzaArray(lyricsInput))
+		this.setState({ modalOpen: false })
 	}
 
 	render() {
-		const { originalLyrics, songTitle } = this.props;
+		const { originalLyrics, songTitle } = this.props
 		return (
 			<Modal
 				trigger={<Button primary onClick={this._open}>Enter Lyrics</Button>}
@@ -39,8 +53,17 @@ class LyricsInputButton extends Component {
 				<Modal.Content>
 					<Modal.Description>
 						<Form>
-							<Input style={{ marginBottom: '24px' }} defaultValue={songTitle} onChange={(e) => this.setState({ titleInput: e.target.value })} />
-							<TextArea autoHeight style={{ marginBottom: '24px' }} defaultValue={originalLyrics} onChange={(e) => this.setState({ lyricsInput: e.target.value })} />
+							<Input
+								style={{ marginBottom: '24px' }}
+								defaultValue={songTitle}
+								onChange={(e) => this.setState({ titleInput: e.target.value })}
+							/>
+							<TextArea
+								autoHeight
+								style={{ marginBottom: '24px' }}
+								defaultValue={originalLyrics}
+								onChange={(e) => this.setState({ lyricsInput: e.target.value })}
+							/>
 							<Button
 								type='submit'
 								content='Submit'
@@ -51,8 +74,8 @@ class LyricsInputButton extends Component {
 					</Modal.Description>
 				</Modal.Content>
 			</Modal>
-		);
+		)
 	}
 }
 
-export default LyricsInputButton;
+export default LyricsInputButton
