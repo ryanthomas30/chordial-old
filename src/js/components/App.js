@@ -1,37 +1,53 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
 import { Header } from 'semantic-ui-react'
 
 import MainHeader from './MainHeader'
 import Stanza from './Stanza'
 import LyricsInputButton from './LyricsInputButton'
+import InputPanel from './InputPanel'
 
+import { Song, LyricLocation } from '../song'
 import { RootState } from '../reducers'
 import * as actions from '../actions'
 
 type Props = {
-	updateStanzas: typeof actions.updateStanzas,
+	updateSong: typeof actions.updateSong,
 	updateOriginalLyrics: typeof actions.updateOriginalLyrics,
 	updateInputState: typeof actions.updateInputState,
+	updateChord: typeof actions.updateChord,
 	originalLyrics: String,
 	songTitle: String,
-	stanzas: Array<Array<Array<String>>>
+	song: Song,
+	isInputOpen: Boolean,
+	inputLyricLocation: LyricLocation
 }
 
 class App extends Component<Props> {
 	render() {
-		const { updateStanzas, updateOriginalLyrics, originalLyrics, songTitle, stanzas } = this.props
+		const {
+			updateSong,
+			updateOriginalLyrics,
+			updateChord,
+			originalLyrics,
+			updateInputState,
+			songTitle,
+			song,
+			isInputOpen,
+			inputLyricLocation
+		} = this.props
+
 		const Stanzas = () => {
-			return stanzas.map((stanza, i) => {
+			return song.map((stanza, i) => {
 				return (
 					<Stanza
-						stanza={stanza}
 						stanzaIndex={i}
-						stanzas={stanzas}
-						updateStanzas={updateStanzas}
 						key={i}
+						stanza={stanza}
+						song={song}
+						updateInputState={updateInputState}
+						inputLyricLocation={inputLyricLocation}
 					/>
 				)
 			})
@@ -44,7 +60,7 @@ class App extends Component<Props> {
 					<LyricsInputButton
 						originalLyrics={originalLyrics}
 						songTitle={songTitle}
-						updateStanzas={updateStanzas}
+						updateSong={updateSong}
 						updateOriginalLyrics={updateOriginalLyrics}
 					/>
 					<Header as='h1' >
@@ -52,6 +68,12 @@ class App extends Component<Props> {
 					</Header>
 					<Stanzas />
 				</div>
+				<InputPanel
+					updateChord={updateChord}
+					isInputOpen={isInputOpen}
+					inputLyricLocation={inputLyricLocation}
+					song={song}
+				/>
 			</div>
 		)
 	}
@@ -62,10 +84,13 @@ App.defaultProps = {
 }
 
 function mapStatetoProps(state: RootState): Object {
+	const { song, originalLyrics, songTitle, isInputOpen, inputLyricLocation } = state.lyrics
 	return {
-		stanzas: state.lyrics.stanzas,
-		originalLyrics: state.lyrics.originalLyrics,
-		songTitle: state.lyrics.songTitle
+		song,
+		originalLyrics,
+		songTitle,
+		isInputOpen,
+		inputLyricLocation
 	}
 }
 

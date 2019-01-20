@@ -1,21 +1,29 @@
 // @flow
 import {
-	UPDATE_STANZAS,
-	UPDATE_STANZAS_TYPE,
+	UPDATE_SONG,
+	UPDATE_SONG_TYPE,
 	UPDATE_ORIGINAL_LYRICS,
 	UPDATE_ORIGINAL_LYRICS_TYPE,
 	UPDATE_INPUT_STATE,
-	UPDATE_INPUT_STATE_TYPE
-} from '.'
+	UPDATE_INPUT_STATE_TYPE,
+	UPDATE_CHORD,
+	UPDATE_CHORD_TYPE
+} from './'
 
-export type UpdateStanzasAction = {
-	type: UPDATE_STANZAS_TYPE,
-	payload: Array<Array<Array<String>>>
+import { Song, LyricLocation, Chord } from '../song'
+
+export type UpdateSongAction = {
+	type: UPDATE_SONG_TYPE,
+	payload: {
+		song: Song
+	}
 }
-export function updateStanzas(stanzas: Array<Array<Array<String>>>): UpdateStanzasAction {
+export function updateSong(song: Song): UpdateSongAction {
 	return {
-		type: UPDATE_STANZAS,
-		payload: stanzas
+		type: UPDATE_SONG,
+		payload: {
+			song
+		}
 	}
 }
 
@@ -40,10 +48,10 @@ export type UpdateInputStateAction = {
 	type: UPDATE_INPUT_STATE_TYPE,
 	payload: {
 		isInputOpen: Boolean,
-		inputLyricLocation: any
+		inputLyricLocation: LyricLocation
 	}
 }
-export function updateInputState(isInputOpen: Boolean, inputLyricLocation: any): UpdateInputStateAction {
+export function updateInputState(isInputOpen: Boolean, inputLyricLocation: LyricLocation): UpdateInputStateAction {
 	return {
 		type: UPDATE_INPUT_STATE,
 		payload: {
@@ -53,7 +61,26 @@ export function updateInputState(isInputOpen: Boolean, inputLyricLocation: any):
 	}
 }
 
+export type UpdateChordAction = {
+	type: UPDATE_CHORD_TYPE,
+	payload: {
+		lyricLocation: LyricLocation,
+		chord: Chord
+	}
+}
+
+export function updateChord(lyricLocation: LyricLocation, chord: Chord): UpdateChordAction {
+	return {
+		type: UPDATE_CHORD,
+		payload: {
+			lyricLocation,
+			chord
+		}
+	}
+}
+
 export type LyricsAction =
-	| UpdateStanzasAction
+	| UpdateSongAction
 	| UpdateOriginalLyricsAction
 	| UpdateInputStateAction
+	| UpdateChordAction

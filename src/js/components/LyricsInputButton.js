@@ -3,14 +3,14 @@ import React, { Component } from 'react'
 
 import { Form, TextArea, Modal, Button, Input } from 'semantic-ui-react'
 
-import { generateStanzaArray } from '../util'
+import { ingestLyrics } from '../song'
 
 import * as lyricsActions from '../actions/lyricsActions'
 
 type Props = {
 	originalLyrics: String,
 	songTitle: String,
-	updateStanzas: typeof lyricsActions.updateStanzas,
+	updateSong: typeof lyricsActions.updateSong,
 	updateOriginalLyrics: typeof lyricsActions.updateOriginalLyrics
 }
 
@@ -34,10 +34,10 @@ class LyricsInputButton extends Component<Props, State> {
 	}
 
 	_submit() {
-		const { updateStanzas, updateOriginalLyrics } = this.props
+		const { updateSong, updateOriginalLyrics } = this.props
 		const { lyricsInput, titleInput } = this.state
 		updateOriginalLyrics(lyricsInput, titleInput)
-		updateStanzas(generateStanzaArray(lyricsInput))
+		updateSong(ingestLyrics(lyricsInput))
 		this.setState({ modalOpen: false })
 	}
 

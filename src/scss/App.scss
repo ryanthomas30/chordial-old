@@ -13,12 +13,13 @@
 
 .character-container {
 	font-family: Fira Code;
-	font-size: 24px;
+	font-size: 1.5rem;
+	margin-bottom: 4rem;
 }
 
 .character {
 	border-radius: 4px;
-	padding: 0px 4px;
+	padding: 0px 2px;
 	&:hover {
 		background-color: #d9d9d9;
 		cursor: pointer;
@@ -26,10 +27,19 @@
 	}
 }
 
+.highlighted-character {
+	color: red;
+	font-weight: 700;
+}
+
+.song-line {
+	margin: 0.5rem 0rem
+}
+
 .character--chord {
 	font-weight: 600;
 	border-radius: 4px;
-	padding: 0px 4px;
+	padding: 0px 2px;
 	&:hover {
 		background-color: #d9d9d9;
 		cursor: pointer;

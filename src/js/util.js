@@ -1,5 +1,8 @@
 // @flow
-export function generateStanzaArray(originalLyrics: String): Array<Array<String>> {
+import { Song, LyricLocation, StanzaLine, Chord } from './song'
+
+// @flow
+export function generateStanzaArray(originalLyrics: String): Array<Array<StanzaLine>> {
 	if (!originalLyrics) return []
 	/* Array of stanzas */
 	/* Stanza is an array of lines */
@@ -53,17 +56,19 @@ export function generateStanzaArray(originalLyrics: String): Array<Array<String>
 	return stanzaArray
 }
 
-export class LyricLocation {
-	constructor(stanza: Number, line: Number, character: Number) {
-		this.stanza = stanza
-		this.line = line
-		this.character = character
-	}
-}
+export function newSongWithChord(song: Song, chord: Chord, lyricLocation: LyricLocation): Song {
+	return song.map((stanza, stanzaIdx) => {
+		if (stanzaIdx !== lyricLocation.stanza) return stanza
 
-export class StanzaLine {
-	constructor(lyrics: Array<String>, chords: Array<String>) {
-		this.lyrics = lyrics
-		this.chords = chords
-	}
+		return stanza.map((line, lineIdx) => {
+			if (lineIdx !== lyricLocation.line) return line
+
+			const newChordLine = line.chords.map((currentChord, chordIdx) => {
+				if (chordIdx !== lyricLocation.character) return currentChord
+				return chord
+			})
+
+			return new StanzaLine([...line.lyrics], newChordLine)
+		})
+	})
 }
