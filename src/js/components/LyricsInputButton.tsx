@@ -1,21 +1,22 @@
 // @flow
 import React, { Component } from 'react'
-
 import { Form, TextArea, Modal, Button, Input } from 'semantic-ui-react'
 
-import { ingestLyrics } from '../song'
-
-import * as lyricsActions from '../actions/lyricsActions'
+import { ingestLyrics } from '../util/songUtil'
+import lyricsActions from '../actions/lyricsActions'
 
 type Props = {
-	originalLyrics: String,
-	songTitle: String,
+	lyrics: string,
+	title: string,
 	updateSong: typeof lyricsActions.updateSong,
-	updateOriginalLyrics: typeof lyricsActions.updateOriginalLyrics
+	updateLyrics: typeof lyricsActions.updateLyrics,
+	updateTitle: typeof lyricsActions.updateTitle
 }
 
 type State = {
-	modalOpen: Boolean
+	modalOpen: boolean,
+	lyricsInput: string,
+	titleInput: string
 }
 
 class LyricsInputButton extends Component<Props, State> {
@@ -25,24 +26,28 @@ class LyricsInputButton extends Component<Props, State> {
 		this._open = this._open.bind(this)
 		this._submit = this._submit.bind(this)
 
-		this.state = { modalOpen: false }
+		this.state = {
+			modalOpen: false,
+			lyricsInput: props.lyrics,
+			titleInput: props.title
+		}
 	}
 
 	_open() {
-		const { originalLyrics, songTitle } = this.props
-		this.setState({ modalOpen: true, lyricsInput: originalLyrics, titleInput: songTitle })
+		this.setState({ modalOpen: true })
 	}
 
 	_submit() {
-		const { updateSong, updateOriginalLyrics } = this.props
+		const { updateSong, updateLyrics, updateTitle } = this.props
 		const { lyricsInput, titleInput } = this.state
-		updateOriginalLyrics(lyricsInput, titleInput)
+		updateLyrics(lyricsInput)
+		updateTitle(titleInput)
 		updateSong(ingestLyrics(lyricsInput))
 		this.setState({ modalOpen: false })
 	}
 
 	render() {
-		const { originalLyrics, songTitle } = this.props
+		const { lyrics, title } = this.props
 		return (
 			<Modal
 				trigger={<Button primary onClick={this._open}>Enter Lyrics</Button>}
@@ -55,14 +60,14 @@ class LyricsInputButton extends Component<Props, State> {
 						<Form>
 							<Input
 								style={{ marginBottom: '24px' }}
-								defaultValue={songTitle}
+								defaultValue={title}
 								onChange={(e) => this.setState({ titleInput: e.target.value })}
 							/>
 							<TextArea
 								autoHeight
 								style={{ marginBottom: '24px' }}
-								defaultValue={originalLyrics}
-								onChange={(e) => this.setState({ lyricsInput: e.target.value })}
+								defaultValue={lyrics}
+								onChange={(e) => this.setState({ lyricsInput: e.currentTarget.value })}
 							/>
 							<Button
 								type='submit'

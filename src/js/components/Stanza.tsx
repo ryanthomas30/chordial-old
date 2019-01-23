@@ -1,8 +1,8 @@
-// @flow
 import React from 'react'
 
-import { Song, StanzaLine, LyricLocation, Chord } from '../song'
-import * as lyricsActions from '../actions/lyricsActions'
+import { Option, Some, None } from '../util/option'
+import { Song, StanzaLine, LyricLocation, Chord } from '../model/song'
+import lyricsActions from '../actions/lyricsActions'
 
 type ChordLineProps = {
 	line: Chord[]
@@ -18,7 +18,7 @@ const ChordLine = (props: ChordLineProps) => {
 		.filter(c => c.chord !== null)
 
 	let i = 0
-	const chars: String[] = []
+	const chars: string[] = []
 	while (chords.length > 0) {
 		const { chord, idx } = chords[0]
 		if (i >= idx) {
@@ -35,53 +35,65 @@ const ChordLine = (props: ChordLineProps) => {
 
 	if (chars.length < line.length) chars.push(...new Array(line.length - chars.length).fill(' '))
 
-	return chars.map((c: String, key: Number) => {
-		return (
-			<span className='character--chord' key={key} >
-				{c === ' ' ? <React.Fragment>&nbsp;</React.Fragment> : c}
-			</span>
-		)
-	})
+	return (
+		<React.Fragment>
+			{chars.map((c: string, key: number) => {
+				return (
+					<span className='character--chord' key={key} >
+						{c === ' ' ? <React.Fragment>&nbsp;</React.Fragment> : c}
+					</span>
+				)
+			})}
+		</React.Fragment>
+	)
 }
 
 type LyricLineProps = {
-	line: Chord[],
+	line: string[],
 	updateInputState: typeof lyricsActions.updateInputState,
-	inputLyricLocation: Number,
-	stanzaIndex: Number,
-	lineIndex: Number
+	inputLyricLocation: Option<LyricLocation>,
+	stanzaIndex: number,
+	lineIndex: number
 }
 
 const LyricLine = (props: LyricLineProps) => {
 	const { line, updateInputState, inputLyricLocation, stanzaIndex, lineIndex } = props
 
-	return line.map((c: String, charIndex: Number) => {
-		const highlight: String = inputLyricLocation === null ? '' : (
-			inputLyricLocation.stanza === stanzaIndex &&
-			inputLyricLocation.line === lineIndex &&
-			inputLyricLocation.character === charIndex
-		) ? 'highlighted-character' : ''
+	return (
+		<React.Fragment>
+			{line.map((c: string, charIndex: number) => {
+				const highlight = inputLyricLocation
+					.map(
+						ill => (
+							ill.stanza === stanzaIndex &&
+							ill.line === lineIndex &&
+							ill.character === charIndex
+						) ? 'highlighted-character' : ''
+					)
+					.getOrElse('')
 
-		return (
-			<span
-				className={`character ${highlight}`}
-				key={charIndex}
-				onClick={() => {
-					updateInputState(true, new LyricLocation(stanzaIndex, lineIndex, charIndex))
-				}}
-			>
-				{c}
-			</span>
-		)
-	})
+				return (
+					<span
+						className={`character ${highlight}`}
+						key={charIndex}
+						onClick={() => {
+							updateInputState(true, Some(new LyricLocation(stanzaIndex, lineIndex, charIndex)))
+						}}
+					>
+						{c}
+					</span>
+				)
+			})}
+		</React.Fragment>
+	)
 }
 
 type LineWithAnnotationsProps = {
 	updateInputState: typeof lyricsActions.updateInputState,
-	stanzaIndex: Number,
-	lineIndex: Number,
+	stanzaIndex: number,
+	lineIndex: number,
 	line: StanzaLine,
-	inputLyricLocation: LyricLocation
+	inputLyricLocation: Option<LyricLocation>
 }
 const LineWithAnnotations = (props: LineWithAnnotationsProps) => {
 	const { updateInputState, stanzaIndex, lineIndex, line, inputLyricLocation } = props
@@ -108,16 +120,16 @@ const LineWithAnnotations = (props: LineWithAnnotationsProps) => {
 type Props = {
 	updateInputState: typeof lyricsActions.updateInputState,
 	song: Song,
-	stanzaIndex: Number,
+	stanzaIndex: number,
 	stanza: Array<StanzaLine>,
-	inputLyricLocation: LyricLocation
+	inputLyricLocation: Option<LyricLocation>
 }
 const Stanza = (props: Props) => {
 	const { stanza, stanzaIndex, updateInputState, inputLyricLocation } = props
 
 	return (
 		<div className='character-container' >
-			{stanza.map((line: StanzaLine, lineIndex: Number) => {
+			{stanza.map((line: StanzaLine, lineIndex: number) => {
 				return (
 					<LineWithAnnotations
 						key={lineIndex}

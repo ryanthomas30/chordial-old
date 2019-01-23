@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Header } from 'semantic-ui-react'
@@ -8,49 +7,60 @@ import Stanza from './Stanza'
 import LyricsInputButton from './LyricsInputButton'
 import InputPanel from './InputPanel'
 
-import { Song, LyricLocation } from '../song'
+import { Option } from '../util/option'
+import { Song, LyricLocation } from '../model/song'
 import { RootState } from '../reducers'
-import * as actions from '../actions'
+import actions from '../actions'
 
 type Props = {
 	updateSong: typeof actions.updateSong,
-	updateOriginalLyrics: typeof actions.updateOriginalLyrics,
+	updateLyrics: typeof actions.updateLyrics,
+	updateTitle: typeof actions.updateTitle,
 	updateInputState: typeof actions.updateInputState,
 	updateChord: typeof actions.updateChord,
-	originalLyrics: String,
-	songTitle: String,
+	lyrics: string,
+	title: string,
 	song: Song,
-	isInputOpen: Boolean,
-	inputLyricLocation: LyricLocation
+	isInputOpen: boolean,
+	inputLyricLocation: Option<LyricLocation>
 }
 
 class App extends Component<Props> {
+	static defaultProps = {
+		title: 'No Title'
+	}
+
 	render() {
 		const {
 			updateSong,
-			updateOriginalLyrics,
+			updateLyrics,
+			updateTitle,
 			updateChord,
-			originalLyrics,
 			updateInputState,
-			songTitle,
+			lyrics,
+			title,
 			song,
 			isInputOpen,
 			inputLyricLocation
 		} = this.props
 
 		const Stanzas = () => {
-			return song.map((stanza, i) => {
-				return (
-					<Stanza
-						stanzaIndex={i}
-						key={i}
-						stanza={stanza}
-						song={song}
-						updateInputState={updateInputState}
-						inputLyricLocation={inputLyricLocation}
-					/>
-				)
-			})
+			return (
+				<React.Fragment>
+					{song.map((stanza, i) => {
+						return (
+							<Stanza
+								stanzaIndex={i}
+								key={i}
+								stanza={stanza}
+								song={song}
+								updateInputState={updateInputState}
+								inputLyricLocation={inputLyricLocation}
+							/>
+						)
+					})}
+				</React.Fragment>
+			)
 		}
 
 		return (
@@ -58,13 +68,14 @@ class App extends Component<Props> {
 				<MainHeader />
 				<div className='main-content' >
 					<LyricsInputButton
-						originalLyrics={originalLyrics}
-						songTitle={songTitle}
+						lyrics={lyrics}
+						title={title}
 						updateSong={updateSong}
-						updateOriginalLyrics={updateOriginalLyrics}
+						updateLyrics={updateLyrics}
+						updateTitle={updateTitle}
 					/>
 					<Header as='h1' >
-						{songTitle}
+						{title}
 					</Header>
 					<Stanzas />
 				</div>
@@ -79,16 +90,12 @@ class App extends Component<Props> {
 	}
 }
 
-App.defaultProps = {
-	songTitle: 'No Title'
-}
-
-function mapStatetoProps(state: RootState): Object {
-	const { song, originalLyrics, songTitle, isInputOpen, inputLyricLocation } = state.lyrics
+function mapStatetoProps(state: RootState) {
+	const { song, lyrics, title, isInputOpen, inputLyricLocation } = state.lyrics
 	return {
 		song,
-		originalLyrics,
-		songTitle,
+		lyrics,
+		title,
 		isInputOpen,
 		inputLyricLocation
 	}

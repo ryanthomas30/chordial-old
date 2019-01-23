@@ -11,14 +11,14 @@ import App from './js/components/App'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import reduxThunk from 'redux-thunk'
-import reducers from './js/reducers/'
+import rootReducer from './js/reducers/'
 
 import * as serviceWorker from './serviceWorker'
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = createStore(reducers, composeEnhancers(
-	applyMiddleware(reduxThunk)
-))
+const w: any = window as any;
+const devtools: any = w.devToolsExtension ? w.devToolsExtension() : (f: any) => f;
+const middleware = applyMiddleware(reduxThunk);
+const store: any = middleware(devtools(createStore))(rootReducer);
 
 ReactDOM.render(
 	<Provider store={store} >
