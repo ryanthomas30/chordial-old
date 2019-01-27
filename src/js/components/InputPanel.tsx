@@ -1,23 +1,29 @@
-// @flow
 import React from 'react'
 import { Sidebar, Button } from 'semantic-ui-react'
 import { Option, Some, None } from '../util/option'
+
+import { Grid, GridItem } from './util/Grid'
 
 import { Song, LyricLocation, Chord } from '../model/song'
 
 import actions from '../actions'
 
-const BaseInput = (_: {}) => {
+const PanelContent = (_: {}) => {
 	return (
-		<React.Fragment>
-			<Button>I</Button>
-			<Button>II</Button>
-			<Button>III</Button>
-			<Button>IV</Button>
-			<Button>V</Button>
-			<Button>VI</Button>
-			<Button>VII</Button>
-		</React.Fragment>
+		<Grid subdivisions={10} style={{ backgroundColor: 'green' }}>
+			<GridItem column={[1, 6]} row={[1, 3]} style={{ backgroundColor: 'red' }}>
+				Common
+			</GridItem>
+			<GridItem column={[1, 6]} row={[4, 7]} style={{ backgroundColor: 'orange' }}>
+				All
+			</GridItem>
+			<GridItem column={[7, 4]} row={[1, 8]} style={{ backgroundColor: 'blue' }}>
+				Modifiers
+			</GridItem>
+			<GridItem column={[7, 4]} row={[9, 2]} style={{ backgroundColor: 'yellow' }}>
+				Custom
+			</GridItem>
+		</Grid>
 	)
 }
 
@@ -43,22 +49,11 @@ export default (props: Props) => {
 					>
 						<div style={{
 							backgroundColor: 'white',
-							height: '200px'
+							height: '350px'
 						}}>
-							<div>
-								POSITION = (Stanza: {stanza} Line: {line} Character: {character})
+							<PanelContent />
 						</div>
-							<div>
-								CHARACTER = {song[stanza][line].lyrics[character]}
-							</div>
-
-							<button onClick={() => updateChord(new Chord('I', None, Some(3)), ill)}>
-								Add Chord
-						</button>
-
-							<BaseInput />
-						</div>
-					</Sidebar >
+					</Sidebar>
 				)
 			})}
 		</React.Fragment>
