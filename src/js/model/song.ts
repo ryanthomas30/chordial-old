@@ -98,8 +98,8 @@ export type ChordModifier =
 export class Chord {
 	constructor(
 		readonly base: BaseNote,
-		readonly accidental: Option<Accidental> = None,
 		readonly inversion: Option<number> = None,
+		readonly accidental: Option<Accidental> = None,
 		readonly dimAug: Option<DimAug> = None,
 		readonly addedTone: Option<AddedTone> = None,
 		readonly sus: Option<Sus> = None
