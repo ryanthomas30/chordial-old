@@ -1,0 +1,14 @@
+.input-panel {
+	background-color: white;
+	transition: 0.25s ease-in-out;
+}
+
+.input-panel--closed {
+	@extend .input-panel;
+	height: 0px;
+}
+
+.input-panel--open {
+	@extend .input-panel;
+	height: 350px
+}

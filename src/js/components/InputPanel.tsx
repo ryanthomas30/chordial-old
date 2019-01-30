@@ -59,6 +59,7 @@ type Props = {
 
 export default (props: Props) => {
 	const { updateChord, isInputOpen, inputLyricLocation, song } = props
+	const CLASS_ROOT = 'input-panel'
 
 	return (
 		<React.Fragment>
@@ -66,14 +67,11 @@ export default (props: Props) => {
 				const { stanza, line, character } = ill
 				return (
 					<Sidebar
-						visible={isInputOpen}
+						visible
 						direction='bottom'
 						animation='overlay'
 					>
-						<div style={{
-							backgroundColor: 'white',
-							height: '350px'
-						}}>
+						<div className={isInputOpen ? `${CLASS_ROOT}--open` : `${CLASS_ROOT}--closed`} >
 							<PanelContent updateChord={(c: Chord) => updateChord(c, ill)} />
 						</div>
 					</Sidebar>

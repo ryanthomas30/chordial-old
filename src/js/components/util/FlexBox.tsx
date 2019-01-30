@@ -9,7 +9,7 @@ interface mappingType {
 	large: string
 }
 
-const mapping: mappingType = {
+const mapping: any = {
 	start: 'flex-start',
 	end: 'flex-end',
 	between: 'space-between',
@@ -22,7 +22,7 @@ const wrapMap = (b: boolean) => {
 	return b ? 'wrap' : 'nowrap'
 }
 
-const map = (input: keyof mappingType) => {
+const map = (input: string) => {
 	if (input in mapping) {
 		return mapping[input]
 	}
@@ -44,6 +44,7 @@ type Props = {
 	paddingRight: 'small' | 'medium' | 'large' | number
 	paddingTop: 'small' | 'medium' | 'large' | number
 	paddingBottom: 'small' | 'medium' | 'large' | number
+	style: object
 }
 
 class FlexBox extends Component<Props> {
@@ -65,13 +66,14 @@ class FlexBox extends Component<Props> {
 		const flexWrap = wrapMap(wrap)
 
 		/* PADDING */
-		const paddingObj = { padding, paddingLeft, paddingRight, paddingTop, paddingBottom }
-		Object.keys(paddingObj).forEach(k => {
+		
+		const paddingObj: any = { padding, paddingLeft, paddingRight, paddingTop, paddingBottom }
+		Object.keys(paddingObj).forEach((k: string) => {
 			paddingObj[k] = typeof paddingObj[k] === 'number' ? `${paddingObj[k]}px` : map(paddingObj[k])
 		})
 
 		/* MARGIN */
-		const marginObj = { margin, marginLeft, marginRight, marginTop, marginBottom }
+		const marginObj: any = { margin, marginLeft, marginRight, marginTop, marginBottom }
 		Object.keys(marginObj).forEach(k => {
 			marginObj[k] = typeof marginObj[k] === 'number' ? `${marginObj[k]}px` : map(marginObj[k])
 		})
