@@ -19,7 +19,7 @@
 
 .character {
 	border-radius: 4px;
-	padding: 0px 2px;
+	padding: 2px 2px;
 	&:hover {
 		background-color: #d9d9d9;
 		cursor: pointer;
@@ -27,22 +27,21 @@
 	}
 }
 
-.highlighted-character {
-	color: red;
-	font-weight: 700;
+.character--highlighted {
+	@extend .character;
+	background-color: #d1d1d1;
+	font-weight: 600;
+	&:hover {
+		background-color: #d9d9d9;
+	}
+}
+
+.character--chord {
+	@extend .character;
+	font-weight: 600;
+	border-radius: 4px;
 }
 
 .song-line {
 	margin: 0.5rem 0rem
-}
-
-.character--chord {
-	font-weight: 600;
-	border-radius: 4px;
-	padding: 0px 2px;
-	&:hover {
-		background-color: #d9d9d9;
-		cursor: pointer;
-		user-select: none;
-	}
 }

@@ -58,26 +58,27 @@ type LyricLineProps = {
 
 const LyricLine = (props: LyricLineProps) => {
 	const { line, updateInputState, inputLyricLocation, stanzaIndex, lineIndex } = props
+	const CLASS_ROOT = 'character'
 
 	return (
 		<React.Fragment>
 			{line.map((c: string, charIndex: number) => {
-				const highlight = inputLyricLocation
+				const selected = inputLyricLocation
 					.map(
 						ill => (
 							ill.stanza === stanzaIndex &&
 							ill.line === lineIndex &&
 							ill.character === charIndex
-						) ? 'highlighted-character' : ''
+						)
 					)
-					.getOrElse('')
-
+					.getOrElse(false)
+				const className = selected ? `${CLASS_ROOT}--highlighted` : `${CLASS_ROOT}`
 				return (
 					<span
-						className={`character ${highlight}`}
+						className={className}
 						key={charIndex}
 						onClick={() => {
-							updateInputState(true, Some(new LyricLocation(stanzaIndex, lineIndex, charIndex)))
+							updateInputState(!selected, !selected ? Some(new LyricLocation(stanzaIndex, lineIndex, charIndex)) : None)
 						}}
 					>
 						{c}
