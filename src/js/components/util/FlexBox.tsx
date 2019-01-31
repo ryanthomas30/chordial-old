@@ -18,11 +18,12 @@ const mapping: any = {
 	large: '48px'
 }
 
-const wrapMap = (b: boolean) => {
+const wrapMap = (b: boolean | undefined) => {
 	return b ? 'wrap' : 'nowrap'
 }
 
-const map = (input: string) => {
+const map = (input: string | undefined) => {
+	if (!input) return '';
 	if (input in mapping) {
 		return mapping[input]
 	}
@@ -30,21 +31,21 @@ const map = (input: string) => {
 }
 
 type Props = {
-	direction: 'row' | 'column'
-	justify: 'start' | 'end' | 'between'
-	align: 'start' | 'end' | 'between'
-	wrap: boolean
-	margin: 'small' | 'medium' | 'large' | number
-	marginLeft: 'small' | 'medium' | 'large' | number
-	marginRight: 'small' | 'medium' | 'large' | number
-	marginTop: 'small' | 'medium' | 'large' | number
-	marginBottom: 'small' | 'medium' | 'large' | number
-	padding: 'small' | 'medium' | 'large' | number
-	paddingLeft: 'small' | 'medium' | 'large' | number
-	paddingRight: 'small' | 'medium' | 'large' | number
-	paddingTop: 'small' | 'medium' | 'large' | number
-	paddingBottom: 'small' | 'medium' | 'large' | number
-	style: object
+	direction?: 'row' | 'column'
+	justify?: 'start' | 'end' | 'between' | 'center'
+	align?: 'start' | 'end' | 'center' | 'baseline'
+	wrap?: boolean
+	margin?: 'small' | 'medium' | 'large' | number
+	marginLeft?: 'small' | 'medium' | 'large' | number
+	marginRight?: 'small' | 'medium' | 'large' | number
+	marginTop?: 'small' | 'medium' | 'large' | number
+	marginBottom?: 'small' | 'medium' | 'large' | number
+	padding?: 'small' | 'medium' | 'large' | number
+	paddingLeft?: 'small' | 'medium' | 'large' | number
+	paddingRight?: 'small' | 'medium' | 'large' | number
+	paddingTop?: 'small' | 'medium' | 'large' | number
+	paddingBottom?: 'small' | 'medium' | 'large' | number
+	style?: object
 }
 
 class FlexBox extends Component<Props> {
@@ -61,7 +62,7 @@ class FlexBox extends Component<Props> {
 
 		/* FLEX */
 		const flexDirection = direction
-		const justifyContent = map(justify)
+		const justifyContent = map(justify);
 		const alignItems = map(align)
 		const flexWrap = wrapMap(wrap)
 
